@@ -2,9 +2,8 @@ ftwl = require \./ftwl
 argv = require \optimist .argv
 
 doit = ->
-    name, legurl <- ftwl.parse_all_legs it
-    console.log name
-#    console.log url
+    res <- ftwl.parse_all_legs it
+    console.log res
 
 if file = argv?file
     data = fs.readFileSync file, \utf8

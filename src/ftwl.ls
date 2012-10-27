@@ -22,17 +22,20 @@ parse_all_legs(data, cb) =
 	title = $('span[class=leg03_titbg]').text()
 
 	# name of legister
-	name = $('td[class=leg03_news_search_03]').text()
+	# name = $('td.leg03_news_search_03 a').text()
+	legtable = $('td.leg03_news_search_03').toArray()
+	for leg in legtable
+		name = leg.children[0].children[0]['data']
+		url = leg.children[0]['attribs']['href']
+		res.push name, url
 
 #    $('table#tableData tbody tr').each ->
 #        try [_area, station, rain] = $ @ .find \td .get!map -> $ it .text!
 #        [,station_name,station_id] = station.match /(\S+)\s*\((\S+)\)/
 #        [,town,area] = _area.match /(...)(.*)/
 #        res.push [station_id, rain, town, area, station_name]
-	url = \test
 
-	cb name, url
-
+	cb res
 
 module.exports = {
 	fetch_all_legs,
