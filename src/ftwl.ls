@@ -9,9 +9,15 @@ fetch(args, cb) =
 queryFlag = \true
 #searchValues[0] = \王金平
 
-fetch_leglist = fetch url: \http://www.ly.gov.tw/03_leg/0301_main/legList.action
+twlyurl = \http://www.ly.gov.tw
 
 fetch_all_legs = fetch url: \http://www.ly.gov.tw/03_leg/0301_main/legList.action
+
+# fetch_a_leg(data, cb) =
+#	console.log data
+#	legintro = fetch url: data
+#	cb legintro
+fetch_a_leg = fetch url: \http://www.ly.gov.tw/03_leg/0301_main/legIntro.action?lgno=00001&stage=8
 
 ### parse all legists
 parse_all_legs(data, cb) =
@@ -25,19 +31,34 @@ parse_all_legs(data, cb) =
 	# name = $('td.leg03_news_search_03 a').text()
 	legtable = $('td.leg03_news_search_03').toArray()
 	for leg in legtable
-		name = leg.children[0].children[0]['data']
-		url = leg.children[0]['attribs']['href']
-		res.push name, url
-
-#    $('table#tableData tbody tr').each ->
-#        try [_area, station, rain] = $ @ .find \td .get!map -> $ it .text!
-#        [,station_name,station_id] = station.match /(\S+)\s*\((\S+)\)/
-#        [,town,area] = _area.match /(...)(.*)/
-#        res.push [station_id, rain, town, area, station_name]
-
+		leginfo = {}
+		leginfo['name'] = leg.children[0].children[0]['data']
+		leginfo['url'] = twlyurl + leg.children[0]['attribs']['href']
+		#res.push [name, url]
+		res.push leginfo
 	cb res
+
+parse_a_leg(data, cb) =
+	leginfo = []
+	$ = require \cheerio .load(data)
+	# console.log $.html()
+
+	leginfotb = $('td.contentbgtop04').next().children().html()
+	# console.log leginfotb
+	$ = require \cheerio .load(leginfotb)
+	leginfotb = $('table')
+	console.log leginfotb.html()
+
+	# picture and party info
+	party = $('table tr td')
+	console.log party
+	
+
+	cb leginfo
 
 module.exports = {
 	fetch_all_legs,
+	fetch_a_leg,
 	parse_all_legs,
+	parse_a_leg,
 }
