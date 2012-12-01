@@ -45,14 +45,51 @@ parse_a_leg(data, cb) =
 
 	leginfotb = $('td.contentbgtop04').next().children().html()
 	# console.log leginfotb
+
 	$ = require \cheerio .load(leginfotb)
 	leginfotb = $('table')
-	console.log leginfotb.html()
+	# console.log leginfotb.html()
 
 	# picture and party info
-	party = $('table tr td')
-	console.log party
-	
+	party = $('table tr td').children().text()
+	#console.log party
+
+	# intro
+	intro = $('table').children().next().html()
+	# console.log intro
+	$ = require \cheerio .load(intro)
+
+	#intro_html = $('td ul li').html()
+	introtb = $('td ul li').toArray()
+
+	# 中文名字
+	intro_name = introtb[0]['children'][0]['data']
+	console.log intro_name
+
+	# 英文名字
+	intro_enname = introtb[1]['children'][0]['data']
+	console.log intro_enname
+
+	# 性別
+	intro_sex = introtb[2]['children'][0]['data']
+	console.log intro_sex
+
+	# 黨籍
+	intro_party = introtb[3]['children'][0]['data']
+	console.log intro_party
+
+	# 黨團
+	intro_partygroup = introtb[4]['children'][0]['data']
+	console.log intro_partygroup
+
+	# 選區
+	intro_elecreg = introtb[5]['children'][0]['data']
+	console.log intro_elecreg
+
+	# 委員會
+	intro_commitee = introtb[6]['children'][0]['data']
+	console.log intro_commitee
+
 
 	cb leginfo
 
